@@ -1,0 +1,42 @@
+Client:
+    The client is the same as the client from the previous
+    with changes to fix the issues related to select. It takes
+    an optional command line argument for both the name and port.
+    By default the name and port are set to Client and 8080
+    respectively. To leave the chat room, the client will send
+    "DONE\n" to the server.
+    
+Server:
+    The server takes one optional command line argument for the
+    port number. Otherwise, the default port is 8080. The server
+    broadcasts messages to every user that did not send the message.
+    
+    Running Threads:
+    The main thread launches a thread on the broadcast and 
+    init_client functions. 
+    
+    (Consumer threads)
+    The broadcast function obtains a lock on both the message 
+    queue and client list data structures. If there are no messages 
+    in the queue, the thread is put to sleep until a signal 
+    is sent from the enqueue function.
+    
+    
+    (Producer threads)
+    The init_client calls the welcome, add_client, remove_client, 
+    enqueue, and goodbye functions. 
+        -Welcome obtains a lock on the client list data structure
+        before sending the new client a buffer with all user names.
+        -add_client obtains a lock on the client list data structure
+        and adds a client to the list. If the list is at max capacity, the
+        thread is put to sleep until a signal is sent from remove client.
+        -remove_client obtains a lock on the client list data structure
+        and removes a client from the list.
+        -enqueue takes in a message and client id. It obtains a lock on
+        the message queue data structure. Its parameters include a message
+        and client id. When the message is broadcasted to user, the broadcast
+        function skips over the client with the matching client id.
+        -goodbye obtains a lock on the message queue data structure and
+        generates a logging off message.
+    
+

@@ -1,0 +1,2 @@
+The client side successfully connects to the server, however the server does not read from the client. The client gets all data from the server.
+The command line arguments are in the order name, port and ip address

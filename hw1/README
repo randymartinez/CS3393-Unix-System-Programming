@@ -1,0 +1,1 @@
+The generations for life.c do not generate past generation 1. The char next generation grid is not copied correctly into the char* grid. 
